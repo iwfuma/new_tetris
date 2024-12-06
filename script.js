@@ -7,14 +7,25 @@ const BLOCK_SIZE = 30;
 canvas.width = COLS * BLOCK_SIZE;
 canvas.height = ROWS * BLOCK_SIZE;
 
+document.addEventListener('keydown', function (event) {
+    // Detect Cmd+R (Mac) or Ctrl+R (Windows/Linux)
+    const isReloadShortcut = (event.key === 'r' || event.key === 'R') && (event.ctrlKey || event.metaKey);
+    
+    if (isReloadShortcut) {
+        event.preventDefault(); // Block the default reload behavior
+        alert('Reloading via shortcut is disabled.'); // Optional: notify the user
+        console.log('Cmd+R or Ctrl+R was blocked.');
+    }
+});
+
 // ゲームオーバー状態
 let gameOver = false;
 
 // スコア
 let score = 0;
 
-let topScores = [0, 0, 0]; // トップ3のスコアを保持
-
+// トップ3のスコアを保持
+let topScores = [0, 0, 0]; 
 
 // テトリスのフィールド
 let field = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
@@ -77,13 +88,6 @@ function newTetromino() {
         shape: TETROMINOS[index].shape,
         color: TETROMINOS[index].color,
     };
-
-    // 次のテトリスのブロックを決定
-    nextTetromino = {
-        shape: TETROMINOS[Math.floor(Math.random() * TETROMINOS.length)].shape,
-        color: TETROMINOS[Math.floor(Math.random() * TETROMINOS.length)].color,
-    };
-    
     currentPosition = { x: Math.floor(COLS / 2) - Math.floor(currentTetromino.shape[0].length / 2), y: 0 };
 
     if (!isValidMove(0, 0, currentTetromino.shape)) {
@@ -207,6 +211,7 @@ function updateTimer() {
     }
 }
 
+
 // 結果を表示する関数
 function showResult() {
     const resultMessage = `Game Over! Final Score: ${score}`;
@@ -258,6 +263,7 @@ document.addEventListener('keydown', (event) => {
     draw();
 });
 
+
 function resetGame() {
     // フィールドをクリア
     field = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
@@ -290,7 +296,6 @@ function init() {
 }
 
 
-
 // ゲームのループ
 function gameLoop() {
     if (!gameOver) {
@@ -303,3 +308,4 @@ function gameLoop() {
 init();
 setInterval(updateTimer, 1000);
 setInterval(gameLoop, 400);//落下速度調整
+
