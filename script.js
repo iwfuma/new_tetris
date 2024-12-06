@@ -77,6 +77,13 @@ function newTetromino() {
         shape: TETROMINOS[index].shape,
         color: TETROMINOS[index].color,
     };
+
+    // 次のテトリスのブロックを決定
+    nextTetromino = {
+        shape: TETROMINOS[Math.floor(Math.random() * TETROMINOS.length)].shape,
+        color: TETROMINOS[Math.floor(Math.random() * TETROMINOS.length)].color,
+    };
+    
     currentPosition = { x: Math.floor(COLS / 2) - Math.floor(currentTetromino.shape[0].length / 2), y: 0 };
 
     if (!isValidMove(0, 0, currentTetromino.shape)) {
@@ -264,7 +271,7 @@ function resetGame() {
     document.getElementById('game-over-message').style.display = 'none';
     
     // タイマーをリセット
-    timeLeft = 120;
+    timeLeft = 100;
     document.getElementById('timer').textContent = `Time: ${timeLeft}`;
     
     // 新しいテトリスブロックを生成して描画
