@@ -184,7 +184,7 @@ function rotateTetromino() {
 }
 
 // タイマー
-let timeLeft = 120;
+let timeLeft = 100;
 const timerElement = document.getElementById('timer');
 
 // タイマーを更新する関数
