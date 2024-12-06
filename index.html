@@ -74,15 +74,24 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="score-board">
+        <h2>Top Scores</h2>
+        <ol id="top-scores">
+            <li>1st: 0</li>
+            <li>2nd: 0</li>
+            <li>3rd: 0</li>
+        </ol>
+        <button id="restart-button">Restart Game</button>
+    </div>
+    
+    <div class="game-area">
         <div id="timer">Time: 120</div>
         <canvas id="tetris-canvas" width="300" height="450"></canvas>
-        <div id="game-over-message" style="display: none;">
-            <!-- ゲームオーバーメッセージ -->
-        </div>
+        <div id="game-over-message" style="display: none;"></div>
         <div id="score">Score: 0</div>
-        
     </div>
+    
+    
     <aside>
         <h2>操作説明</h2>
         <ul>

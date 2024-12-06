@@ -13,6 +13,9 @@ let gameOver = false;
 // スコア
 let score = 0;
 
+let topScores = [0, 0, 0]; // トップ3のスコアを保持
+
+
 // テトリスのフィールド
 let field = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 
@@ -200,9 +203,29 @@ function updateTimer() {
 // 結果を表示する関数
 function showResult() {
     const resultMessage = `Game Over! Final Score: ${score}`;
-    document.getElementById('game-over-message').textContent = resultMessage;
-    document.getElementById('game-over-message').style.display = 'block';  // ゲームオーバーのメッセージを表示
+    const messageElement = document.getElementById('game-over-message');
+    messageElement.textContent = resultMessage;
+    messageElement.style.display = 'block';
+
+    updateTopScores(score); // トップスコアを更新
 }
+
+
+function updateTopScores(newScore) {
+    // 新しいスコアを追加してソート
+    topScores.push(newScore);
+    topScores.sort((a, b) => b - a);
+    topScores = topScores.slice(0, 3); // トップ3のみを保持
+
+    // スコアボードを更新
+    const topScoresElement = document.getElementById('top-scores');
+    topScoresElement.innerHTML = `
+        <li>1st: ${topScores[0]}</li>
+        <li>2nd: ${topScores[1]}</li>
+        <li>3rd: ${topScores[2]}</li>
+    `;
+}
+
 
 
 // キーボード入力を処理
@@ -228,11 +251,38 @@ document.addEventListener('keydown', (event) => {
     draw();
 });
 
+function resetGame() {
+    // フィールドをクリア
+    field = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+    
+    // スコアをリセット
+    score = 0;
+    document.getElementById('score').textContent = `Score: ${score}`;
+    
+    // ゲームオーバーフラグをリセット
+    gameOver = false;
+    document.getElementById('game-over-message').style.display = 'none';
+    
+    // タイマーをリセット
+    timeLeft = 120;
+    document.getElementById('timer').textContent = `Time: ${timeLeft}`;
+    
+    // 新しいテトリスブロックを生成して描画
+    init();
+}
+
+document.getElementById('restart-button').addEventListener('click', resetGame);
+
+
 // ゲームの初期化
 function init() {
+    score = 0;
+    updateTopScores(0); // スコアボードを初期化
     newTetromino();
     draw();
 }
+
+
 
 // ゲームのループ
 function gameLoop() {
