@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 全体の基本設定 */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden; /* 横スクロールを無効化 */
+        }
+
+        /* ゲーム画面 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        /* タイマーの位置固定 */
+        #timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 10px;
+        }
+
+        /* 操作説明のスタイル */
+        aside {
+            width: 100%;
+            max-width: 500px; /* 横幅を制限 */
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ccc;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        aside h2 {
+            margin-top: 0;
+        }
+
+        aside ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        aside ul li {
+            margin: 5px 0;
+        }
+
+        /* キャンバスのサイズ固定 */
+        #tetris-canvas {
+            display: block;
+            background-color: whitesmoke;
+            border: 1px solid #ccc;
+        }
+
+        /* ゲームオーバーメッセージ */
+        #game-over-message {
+            font-size: 20px;
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="timer">Time: 120</div>
+        <canvas id="tetris-canvas" width="300" height="450"></canvas>
+        <div id="game-over-message" style="display: none;">
+            <!-- ゲームオーバーメッセージ -->
+        </div>
+        <div id="score">Score: 0</div>
+        
+    </div>
+    <aside>
+        <h2>操作説明</h2>
+        <ul>
+            <li><strong>←</strong>: 左に移動</li>
+            <li><strong>→</strong>: 右に移動</li>
+            <li><strong>↓</strong>: 下に移動</li>
+            <li><strong>↑</strong>: ブロックを回転</li>
+        </ul>
+    </aside>
+    <script src="script.js"></script>
+</body>
+</html>
