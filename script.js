@@ -1,6 +1,8 @@
 const canvas = document.getElementById('tetris-canvas');
 const context = canvas.getContext('2d');
 
+
+
 const ROWS = 15; 
 const COLS = 10;
 const BLOCK_SIZE = 30;
@@ -17,6 +19,9 @@ document.addEventListener('keydown', function (event) {
         console.log('Cmd+R or Ctrl+R was blocked.');
     }
 });
+
+
+let nextTetromino = null;
 
 // ゲームオーバー状態
 let gameOver = false;
@@ -81,20 +86,59 @@ function drawTetromino() {
 
 // 新しいテトリスのブロックを生成
 function newTetromino() {
-    if (gameOver) return;  // ゲームオーバー時にブロックの生成を停止
+    if (gameOver) return;
 
+    if (!nextTetromino) {
+        const index = Math.floor(Math.random() * TETROMINOS.length);
+        nextTetromino = {
+            shape: TETROMINOS[index].shape,
+            color: TETROMINOS[index].color,
+        };
+    }
+
+    currentTetromino = nextTetromino;
+    nextTetromino = null;  // 次のテトリスブロックを更新するために次に生成
+
+    // 次のテトリスブロックを生成
     const index = Math.floor(Math.random() * TETROMINOS.length);
-    currentTetromino = {
+    nextTetromino = {
         shape: TETROMINOS[index].shape,
         color: TETROMINOS[index].color,
     };
+
     currentPosition = { x: Math.floor(COLS / 2) - Math.floor(currentTetromino.shape[0].length / 2), y: 0 };
 
     if (!isValidMove(0, 0, currentTetromino.shape)) {
-        gameOver = true;  // ゲームオーバーに設定
-        showResult();  // 結果表示
+        gameOver = true;
+        showResult();
     }
 }
+
+function drawNextTetromino() {
+    const nextTetrominoElement = document.getElementById('next-tetromino');
+    nextTetrominoElement.innerHTML = ''; // 既存の内容をクリア
+
+    const shape = nextTetromino.shape;
+    const blockSize = 30; // 各ブロックのサイズ
+
+    shape.forEach((row, r) => {
+        row.forEach((cell, c) => {
+            if (cell !== 0) {
+                const block = document.createElement('div');
+                block.style.width = `${blockSize}px`;
+                block.style.height = `${blockSize}px`;
+                block.style.backgroundColor = nextTetromino.color;
+                block.style.position = 'absolute';
+                block.style.top = `${r * blockSize}px`;
+                block.style.left = `${c * blockSize}px`;
+                block.style.border = '1px solid #000'; // 枠線を追加
+                nextTetrominoElement.appendChild(block);
+            }
+        });
+    });
+}
+
+
 
 // 移動できるかチェック
 function isValidMove(offsetX, offsetY, shape) {
@@ -160,15 +204,18 @@ function fixTetromino() {
 function removeFullRows() {
     let rowsToRemove = [];
 
-    for (let r = ROWS - 1; r >= 0; r--) {
-        if (field[r].every(cell => cell !== 0)) {
-            rowsToRemove.push(r);
+    // フィールド内の全行をチェック
+    for (let r = 0; r < ROWS; r++) {  // 上から順にチェック
+        if (field[r].every(cell => cell !== 0)) { // 行がすべて埋まっている場合
+            rowsToRemove.push(r);  // 削除する行を記録
         }
     }
 
+    // 削除対象の行をすべて削除
+    // 行を削除する際には、上から順に削除し、新しい空行を先頭に追加
     rowsToRemove.forEach(rowIndex => {
-        field.splice(rowIndex, 1);
-        field.unshift(Array(COLS).fill(0));
+        field.splice(rowIndex, 1); // 行を削除
+        field.unshift(Array(COLS).fill(0)); // 新しい空行を先頭に追加
     });
 
     // スコアを削除行数分だけ1増加
@@ -180,6 +227,7 @@ function removeFullRows() {
         scoreElement.textContent = `Score: ${score}`;
     }
 }
+
 
 
 
@@ -301,8 +349,10 @@ function gameLoop() {
     if (!gameOver) {
         moveTetromino('down');
         draw();
+        drawNextTetromino(); // 次のブロックを表示
     }
 }
+
 
 // ゲーム開始
 init();
