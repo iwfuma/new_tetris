@@ -20,8 +20,9 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
+let previousTetromino = null; // 直前のテトリスブロックを記録
 
-let nextTetromino = null;
+let nextTetromino = null; //次のブロックを生成
 
 // ゲームオーバー状態
 let gameOver = false;
@@ -89,7 +90,7 @@ function newTetromino() {
     if (gameOver) return;
 
     if (!nextTetromino) {
-        const index = Math.floor(Math.random() * TETROMINOS.length);
+        const index = getRandomTetrominoIndex();
         nextTetromino = {
             shape: TETROMINOS[index].shape,
             color: TETROMINOS[index].color,
@@ -100,7 +101,7 @@ function newTetromino() {
     nextTetromino = null;  // 次のテトリスブロックを更新するために次に生成
 
     // 次のテトリスブロックを生成
-    const index = Math.floor(Math.random() * TETROMINOS.length);
+    const index = getRandomTetrominoIndex();
     nextTetromino = {
         shape: TETROMINOS[index].shape,
         color: TETROMINOS[index].color,
@@ -113,6 +114,17 @@ function newTetromino() {
         showResult();
     }
 }
+
+// ランダムにテトリスブロックのインデックスを生成する関数
+function getRandomTetrominoIndex() {
+    let index;
+    do {
+        index = Math.floor(Math.random() * TETROMINOS.length);
+    } while (TETROMINOS[index].color === previousTetromino?.color); // 直前のブロックと同じ色を避ける
+    previousTetromino = TETROMINOS[index]; // 生成したブロックを記録
+    return index;
+}
+
 
 function drawNextTetromino() {
     const nextTetrominoElement = document.getElementById('next-tetromino');
@@ -227,6 +239,7 @@ function removeFullRows() {
         scoreElement.textContent = `Score: ${score}`;
     }
 }
+
 
 
 
