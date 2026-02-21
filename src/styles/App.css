@@ -1,164 +1,293 @@
-/* グローバルリセット */
+/* ===== グローバルリセット ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* 全体のレイアウト */
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  position: relative;
-  margin: 0;
-  padding: 0;
-  flex-direction: column;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  font-family: 'Arial', sans-serif;
+  color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 16px;
 }
 
+/* ===== アプリ全体のレイアウト ===== */
 .app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   width: 100%;
-  height: 100vh;
-  position: relative;
+  max-width: 900px;
 }
 
-/* タイマーの位置固定 */
-#timer {
-  font-size: 24px;
+/* ===== タイトル ===== */
+.app-title {
+  font-size: 36px;
   font-weight: bold;
-  color: black;
-  margin-bottom: 10px;
+  letter-spacing: 8px;
+  color: #e94560;
+  text-shadow: 0 0 20px rgba(233, 69, 96, 0.6);
 }
 
-/* スコアボードのスタイル */
-.score-board {
-  position: absolute;
-  left: 25%;
-  top: 14%;
-  width: 200px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: left;
-}
-
-.score-board h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.score-board ol {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.score-board li {
-  font-size: 16px;
-  margin: 5px 0;
-}
-
-/* テトリスフィールドのスタイル */
-.game-area {
-  position: absolute;
-  top: 39%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* ===== メインエリア（3カラム） ===== */
+.main-area {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-/* リスタートボタン */
-#restart-button {
-  display: block;
-  margin: 20px auto 0;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#restart-button:hover {
-  background-color: #45a049;
-}
-
-#restart-button:active {
-  background-color: #3e8e41;
-}
-
-/* ゲームオーバーメッセージ */
-#game-over-message {
-  font-size: 20px;
-  color: red;
-  margin-top: 20px;
-}
-
-/* 操作説明のスタイル */
-aside {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
   width: 100%;
-  max-width: 500px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ccc;
-  text-align: center;
-  box-sizing: border-box;
-  margin-top: auto;
+  justify-content: center;
 }
 
-aside h2 {
-  margin-top: 0;
-}
-
-aside ul {
-  list-style: none;
-  padding: 0;
-}
-
-aside ul li {
-  margin: 5px 0;
-}
-
-#next-tetromino-container {
-  width: 200px;
-  height: 120px;
-  position: absolute;
-  top: 14%;
-  right: 25%;
+/* ===== 左カラム（スコアボード） ===== */
+.left-panel {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 16px;
+  width: 180px;
+  flex-shrink: 0;
+}
+
+/* ===== 中央カラム（ゲームエリア） ===== */
+.center-panel {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* ===== 右カラム（ネクスト・操作説明） ===== */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 180px;
+  flex-shrink: 0;
+}
+
+/* ===== 共通パネルスタイル ===== */
+.panel {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #e94560;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+/* ===== タイマー ===== */
+.timer-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.timer-label {
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+.timer-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #e0e0e0;
+  min-width: 48px;
+  text-align: right;
+}
+
+.timer-value.warning {
+  color: #e94560;
+  animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 1; }
+  to { opacity: 0.5; }
+}
+
+/* ===== スコアボード ===== */
+.score-board {}
+
+.score-current {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.score-ranking {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.score-ranking li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.rank-label {
+  color: #aaa;
+}
+
+.rank-value {
+  font-weight: bold;
+  color: #fff;
+}
+
+.rank-1 .rank-label { color: #ffd700; }
+.rank-2 .rank-label { color: #c0c0c0; }
+.rank-3 .rank-label { color: #cd7f32; }
+
+/* ===== リスタートボタン ===== */
+.restart-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #fff;
+  background-color: #e94560;
+  border: none;
   border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  text-transform: uppercase;
 }
 
-#next-tetromino {
-  width: 90px;
-  height: 90px;
+.restart-button:hover {
+  background-color: #c73652;
+}
+
+.restart-button:active {
+  transform: scale(0.97);
+}
+
+/* ===== ゲームキャンバス ===== */
+.game-canvas {
+  display: block;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  background-color: #0a0a1a;
+  box-shadow:
+    0 0 40px rgba(233, 69, 96, 0.15),
+    inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== スコア表示（キャンバス下） ===== */
+.score-display {
+  font-size: 14px;
+  color: #aaa;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.score-display span {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* ===== ゲームオーバー ===== */
+.game-over-overlay {
   position: relative;
+  width: 100%;
 }
 
-#next-tetromino div {
-  width: 30px;
-  height: 30px;
-  margin: 2px;
-  position: absolute;
-  background-color: transparent;
+.game-over-banner {
+  text-align: center;
+  padding: 12px 16px;
+  background-color: rgba(233, 69, 96, 0.2);
+  border: 1px solid #e94560;
+  border-radius: 8px;
+  color: #e94560;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* ===== ネクストテトロミノ ===== */
+.next-tetromino-wrapper {
+  position: relative;
+  width: 120px;
+  height: 90px;
+  margin: 0 auto;
+}
+
+/* ===== 操作説明 ===== */
+.controls-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.controls-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #bbb;
+}
+
+.key-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-size: 12px;
+  color: #fff;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* ===== レスポンシブ対応 ===== */
+@media (max-width: 640px) {
+  .main-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    max-width: 320px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .left-panel > *,
+  .right-panel > * {
+    flex: 1 1 140px;
+  }
 }

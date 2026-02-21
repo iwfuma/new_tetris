@@ -1,31 +1,31 @@
+const BLOCK_SIZE = 28;
+
 export const NextTetromino = ({ tetromino }) => {
-  if (!tetromino) return null;
-
-  const blockSize = 30;
-
   return (
-    <div id="next-tetromino-container">
-      <h3>NEXT</h3>
-      <div id="next-tetromino">
-        {tetromino.shape.map((row, r) =>
+    <div className="panel">
+      <p className="panel-title">Next</p>
+      <div className="next-tetromino-wrapper">
+        {tetromino?.shape.map((row, r) =>
           row.map((cell, c) => {
-            if (cell !== 0) {
-              return (
-                <div
-                  key={`${r}-${c}`}
-                  style={{
-                    width: `${blockSize}px`,
-                    height: `${blockSize}px`,
-                    backgroundColor: tetromino.color,
-                    position: 'absolute',
-                    top: `${r * blockSize}px`,
-                    left: `${c * blockSize}px`,
-                    border: '1px solid #000'
-                  }}
-                />
-              );
-            }
-            return null;
+            if (cell === 0) return null;
+            return (
+              <div
+                key={`${r}-${c}`}
+                style={{
+                  width: BLOCK_SIZE,
+                  height: BLOCK_SIZE,
+                  backgroundColor: tetromino.color,
+                  position: 'absolute',
+                  top: r * BLOCK_SIZE,
+                  left: c * BLOCK_SIZE,
+                  borderTop: '3px solid rgba(255,255,255,0.3)',
+                  borderLeft: '3px solid rgba(255,255,255,0.3)',
+                  borderBottom: '3px solid rgba(0,0,0,0.3)',
+                  borderRight: '3px solid rgba(0,0,0,0.3)',
+                  borderRadius: 2,
+                }}
+              />
+            );
           })
         )}
       </div>
