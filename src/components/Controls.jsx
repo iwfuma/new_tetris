@@ -1,13 +1,22 @@
+const CONTROLS = [
+  { key: '←', description: '左に移動' },
+  { key: '→', description: '右に移動' },
+  { key: '↓', description: '下に移動' },
+  { key: '↑', description: '回転' },
+];
+
 export const Controls = () => {
   return (
-    <aside>
-      <h2>操作説明</h2>
-      <ul>
-        <li><strong>←</strong>: 左に移動</li>
-        <li><strong>→</strong>: 右に移動</li>
-        <li><strong>↓</strong>: 下に移動</li>
-        <li><strong>↑</strong>: ブロックを回転</li>
+    <div className="panel">
+      <p className="panel-title">Controls</p>
+      <ul className="controls-list">
+        {CONTROLS.map(({ key, description }) => (
+          <li key={key}>
+            <span className="key-badge">{key}</span>
+            {description}
+          </li>
+        ))}
       </ul>
-    </aside>
+    </div>
   );
 };
