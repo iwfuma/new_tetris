@@ -4,57 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tetris Game</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-    <script>
-        $(document).ready(function() {
-        $("#changeResumeStatus").click(function(event) {
-            event.preventDefault(); // Prevent the default action
-
-            $.get("[% url 'main:changeResumeStatus' %]", function(data) {
-            if (data['message'] == 'hidden') {
-                $("#resumeStatus").text("скрыто");
-            } else {
-                $("#resumeStatus").text("опубликовано");
-            }
-            }, "json");
-        });
-        });
-    </script>
-    <div class="score-board">
-        <h2>Top Scores</h2>
-        <ol id="top-scores">
-            <li>1st: 0</li>
-            <li>2nd: 0</li>
-            <li>3rd: 0</li>
-        </ol>
-        <button id="restart-button">Restart Game</button>
-    </div>
-    
-    <div class="game-area">
-        <div id="timer">Time: 100</div>
-        <canvas id="tetris-canvas" width="300" height="450"></canvas>
-        <div id="game-over-message" style="display: none;"></div>
-        <div id="score">Score: 0</div>
-    </div>
-    
-    
-    <div id="next-tetromino-container">
-        <h3>NEXT</h3>
-        <div id="next-tetromino"></div>
-    </div>
-
-    <aside>
-        <h2>操作説明</h2>
-        <ul>
-            <li><strong>←</strong>: 左に移動</li>
-            <li><strong>→</strong>: 右に移動</li>
-            <li><strong>↓</strong>: 下に移動</li>
-            <li><strong>↑</strong>: ブロックを回転</li>
-        </ul>
-    </aside>
-    <script src="script.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

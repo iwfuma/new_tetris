@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+# React + Vite プロジェクト規約
+
+## 1. 命名規則
+- **コンポーネント**: `PascalCase.tsx` を使用（例: `UserProfile.tsx`）
+- **ディレクトリ**: `kebab-case` を使用（例: `src/components/user-profile/`）
+- **フック**: `camelCase.ts` を使用し、必ず `use` プレフィックスを付ける（例: `useAuth.ts`）
+- **ユーティリティ/型定義**: `camelCase.ts` を使用（例: `formatDate.ts`, `apiTypes.ts`）
+- **CSSモジュール**: `ComponentName.module.css` を使用
+
+## 2. コンポーネントの標準
+- **定義**: アロー関数を使用する: `export const ComponentName = ({ ...Props }) => { ... }`
+- **Propsの型定義**: コンポーネントの直上に `type Props = { ... }` で定義する。`interface` よりも `type` を優先する。
+- **分割代入**: Propsは引数の段階で分割代入する。
+- **React.FC**: `React.FC` は使用せず、Propsに直接型を付ける。
+
+## 3. 変数と関数の命名
+- **変数/関数**: `camelCase` を使用。
+- **定数**: `UPPER_SNAKE_CASE` を使用（例: `API_RETRY_LIMIT`）
+- **論理値**: `is`, `has`, `should` などのプレフィックスを付ける（例: `isLoading`, `hasError`）
+- **イベントハンドラ**: 関数名には `handle` プレフィックスを付ける（例: `handleClick`）
+- **イベントProps**: Props名には `on` プレフィックスを付ける（例: `onClick`）
+
+## 4. ディレクトリ構成
+機能ベース（Feature-based）のアーキテクチャに従う：
+- `src/components/ui/`: 低レベルなUIコンポーネント（shadcn/uiなど）
+- `src/features/[feature-name]/`: 機能固有のロジック（components, hooks, types）
+- `src/hooks/`: プロジェクト全体で共有するフック
+- `src/utils/`: 純粋関数などのヘルパー
+- `src/services/`: API通信などの外部接続ロジック
+
+## 5. コーディングスタイルとTypeScript
+- **厳格な型定義**: `any` の使用は厳禁。すべてに適切な型を定義すること。
+- **インポート**: `@/` エイリアスを使用した絶対パスを使用する。
+- **状態管理**: ローカルな状態は `useState`、グローバル/サーバー状態は `Zustand` や `TanStack Query` の検討を優先する。
+- **Vite**: 環境変数は `import.meta.env.VITE_...` を使用する。
+
+## 6. コミュニケーションガイドライン
+- 簡潔で読みやすいコードを優先する。
+- 既存のコードに特定のパターンがある場合は、それを尊重する。ただし、明らかに負債となる場合はリファクタリングを提案すること。
